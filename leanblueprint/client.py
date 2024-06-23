@@ -128,7 +128,7 @@ repo: Optional[Repo] = None
 try:
     repo = Repo(".", search_parent_directories=True)
 except InvalidGitRepositoryError:
-    error("Could not find a Lean project. Please run this command from inside your project folder.")
+    error("Could not find a project, run 'git init'. Please run this command from inside your project folder.")
 
 assert repo is not None
 #if not (Path(repo.working_dir)/"lakefile.lean").exists():
@@ -237,11 +237,11 @@ def new() -> None:
 
     console.print("\nGeneral information about the project", style="title")
     config['title'] = ask("Project title", default="My formalization project")
-    if len(libs) > 1:
+    """if len(libs) > 1:
         config['lib_name'] = ask(
             "Lean library name", choices=libs, default=default_lib or libs[0])
     else:
-        config['lib_name'] = default_lib or libs[0]
+        config['lib_name'] = default_lib or libs[0]"""
     config['author'] = ask(
         "Author ([info]use \\and to separate authors if needed[/])", default=name)
 
