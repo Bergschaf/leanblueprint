@@ -131,8 +131,8 @@ except InvalidGitRepositoryError:
     error("Could not find a Lean project. Please run this command from inside your project folder.")
 
 assert repo is not None
-if not (Path(repo.working_dir)/"lakefile.lean").exists():
-    error("Could not find a Lean project. Please run this command from inside your project folder.")
+#if not (Path(repo.working_dir)/"lakefile.lean").exists():
+#    error("Could not find a Lean project. Please run this command from inside your project folder.")
 
 blueprint_root = Path(repo.working_dir)/"blueprint"
 
@@ -167,15 +167,15 @@ def new() -> None:
             # This will happen if there is no commit in the repo.
             name = "Anonymous"
 
-    lakefile_path = Path(repo.working_dir)/"lakefile.lean"
-    if not lakefile_path.exists():
-        error("Could not find lakefile.lean in {repo.working_dir}")
-    manifest_path = Path(repo.working_dir)/"lake-manifest.json"
-    libs = []
-    lib_re = re.compile(r"\s*lean_lib\s*([^ ]*)\b")
-    default_re = re.compile(r"@\[default_target\]")
-    default_lib = ""
-    found_default = False
+    #lakefile_path = Path(repo.working_dir)/"lakefile.lean"
+    #if not lakefile_path.exists():
+    #    error("Could not find lakefile.lean in {repo.working_dir}")
+    #manifest_path = Path(repo.working_dir)/"lake-manifest.json"
+    #libs = []
+    #lib_re = re.compile(r"\s*lean_lib\s*([^ ]*)\b")
+    ##default_re = re.compile(r"@\[default_target\]")
+    #default_lib = ""
+    """found_default = False
     with lakefile_path.open("r", encoding="utf8") as lf:
         for line in lf:
             m = lib_re.match(line)
@@ -187,7 +187,7 @@ def new() -> None:
     if not libs:
         warning(
             "Could not find Lean library names in lakefile. Will not propose to setup continuous integration.")
-        can_try_ci = False
+        can_try_ci = False"""
 
     # Will now try to guess the GitHub url
     github = ""
@@ -286,7 +286,7 @@ def new() -> None:
         console.print(
             "\nBlueprint source successfully created in the blueprint folder :tada:\n")
 
-    console.print("\nLake configuration updating", style="title")
+    """console.print("\nLake configuration updating", style="title")
     console.print("The next two questions are crucial for the blueprint infrastructure. Please use the default answer unless you are really sure you already did the necessary work.")
 
     if confirm("Modify lakefile and lake-manifest to allow checking declarations exist?",
@@ -319,9 +319,9 @@ def new() -> None:
         tpl.stream(config).dump(str(path/"blueprint.yml"))
         console.print(
             f"GitHub workflow file created at {path/'blueprint.yml'}")
-        workflow_files.append(path/'blueprint.yml')
+        workflow_files.append(path/'blueprint.yml')"""
 
-    if not confirm("\nCommit to git repository?"):
+    """if not confirm("\nCommit to git repository?"):
         console.print("You are all set! Don’t forget to commit whenever you feel ready.")
         sys.exit(0)
 
@@ -329,7 +329,7 @@ def new() -> None:
     repo.index.add([out_dir, lakefile_path, manifest_path] + workflow_files)
     repo.index.commit(msg)
     console.print(
-        "Git commit created. Don't forget to push when you are ready.")
+        "Git commit created. Don't forget to push when you are ready.")"""
     if platform.system() == 'Windows':
         console.print("\nYou are all set!\n")
     else:
@@ -363,8 +363,9 @@ def web() -> None:
     mk_web()
 
 def do_checkdecls() -> None:
-    subprocess.run("lake exe checkdecls blueprint/lean_decls",
-                   cwd=str(blueprint_root.parent), check=True, shell=True)
+    print("No lean here")
+    #subprocess.run("lake exe checkdecls blueprint/lean_decls",
+    #              cwd=str(blueprint_root.parent), check=True, shell=True)
 
 @cli.command()
 def checkdecls() -> None:
@@ -382,9 +383,9 @@ def all() -> None:
     """
     mk_pdf()
     mk_web()
-    subprocess.run("lake build",
-                   cwd=str(blueprint_root.parent), check=True, shell=True)
-    do_checkdecls()
+    #subprocess.run("lake build",
+    #               cwd=str(blueprint_root.parent), check=True, shell=True)
+    #do_checkdecls()
 
 
 
