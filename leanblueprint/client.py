@@ -355,6 +355,20 @@ def mk_web() -> None:
     (blueprint_root/"web").mkdir(exist_ok=True)
     subprocess.run("plastex -c plastex.cfg web.tex",
                    cwd=str(blueprint_root/"src"), check=True, shell=True)
+    # fix for the icons
+    # get all the html files in the web folder
+    html_files = list((blueprint_root/"web").glob("*.html"))
+    with open(str(blueprint_root/"web/symbol-defs.svg")) as f:
+        svg_stuff = f.read()
+
+    for html_file in html_files:
+        with open(html_file, "r") as f:
+            html = f.read()
+        html = html.replace('symbol-defs.svg', "")
+        html += "\n" + svg_stuff
+        with open(html_file, "w") as f:
+            f.write(html)
+    
 @cli.command()
 def web() -> None:
     """
